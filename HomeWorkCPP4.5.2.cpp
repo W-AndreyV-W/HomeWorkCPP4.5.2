@@ -15,6 +15,30 @@ public:
         delete[] array;
         array = nullptr;
     }
+
+    Table(const Table&) = delete;
+
+    Table& operator = (const Table& other) {
+        if (this != &other) {
+
+            for (int i = 0; i < _row; i++) {
+                delete[] array[i];
+            }
+            delete[] array;
+
+            _row = other._row;
+            _column = other._column;
+
+            create_array();
+
+            for (int i = 0; i < _row; i++) {
+                for (int j = 0; j < _column; j++) {
+                    array[i][j] = other.array[i][j];
+                }
+            }
+        }
+        return *this;
+    }
     
     const T* operator [](const unsigned int row) const {
         return array[row];
@@ -52,4 +76,7 @@ int main()
     std::cout << test[0][1] << std::endl;
     test.size(row, column);
     std::cout << row << " " << column << std::endl;
+    Table<int> test1(1, 1);
+    test1 = test;
+    std::cout << test1[0][1] << std::endl;
 }
